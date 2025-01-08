@@ -43,16 +43,16 @@ class JP_Manual_Gcash_Ref {
 
         ob_start();
         ?>
-        <p class="jp-manual-gcash-checkout-instruction"><?php echo $ins ?></p>
+        <p class="jp-manual-gcash-checkout-instruction"><?php echo wp_kses_post( $ins ) ?></p>
         <?php if ( $qr ) { ?>
         <div class="jp-manual-gcash-qr-wrapper">
-            <img src="<?php echo $qr ?>" alt="merchant gcash qr code" class="jp-manual-gcash-qr" />
+            <img src="<?php echo esc_url( $qr ) ?>" alt="merchant gcash qr code" class="jp-manual-gcash-qr" />
         </div>
         <?php
             } else if ( current_user_can( 'administrator' ) ) {
                 echo sprintf(
                     '<div style="background: #ddd; padding: 15px; margin: 15px 0;">%s</div>',
-                    __( 'Admin notice: You do not have a qr code setup. Please supply your qr code on the gateway settings to allow users to pay via gcash easily', 'gcash-payment-gateway-for-woocommerce' )
+                    esc_html( __( 'Admin notice: You do not have a qr code setup. Please supply your qr code on the gateway settings to allow users to pay via gcash easily', 'gcash-payment-gateway-for-woocommerce' ) )
                 );
             }
         ?>
@@ -74,19 +74,12 @@ class JP_Manual_Gcash_Ref {
                     'class'         => 'jp-manual-gcash-field'
 
                 ]);
+                wp_nonce_field( -1, 'gcash_ref_nonce' );
             ?>
         </div>
         <?php
 
         $fields = ob_get_clean();
-
-        // $fields = wp_kses( $fields, array(
-        //     'div'   => array( 'style', 'class' ),
-        //     'label' => array( 'class' ),
-        //     'input' => array( 'type', 'class', 'placeholder', 'name', 'value' ),
-        //     'img'   => array( 'class' ),
-        //     'p'     => array( 'class' ),
-        // ));
 
         return $description . $fields;
     }
@@ -132,14 +125,29 @@ class JP_Manual_Gcash_Ref {
 
     public function validate_ref()
     {
-        $payment = $_POST['payment_method'] ?? false;
+
+        $nonce = sanitize_text_field( wp_unslash( $_POST['gcash_ref_nonce'] ?? null ));
+
+        if ( ! wp_verify_nonce( $nonce, -1 ) ) {
+
+            wc_add_notice(__('Invalid gcash nonce. Please refresh the page and try again.', 'gcash-payment-gateway-for-woocommerce') , 'error');
+        }
+
+        $payment = sanitize_text_field( wp_unslash( $_POST['payment_method'] ?? false ) );
+
         if ( $payment ) {
-            $ref = $_POST['jp_gcash_manual_ref'] ?? false;   
+
+            $ref = sanitize_text_field( wp_unslash( $_POST['jp_gcash_manual_ref'] ?? false ) );  
+
             if ( ! $ref ) {
+
                 wc_add_notice(__('Please supply your payment reference.', 'gcash-payment-gateway-for-woocommerce') , 'error');
             }
-            $check = $_POST['jp_gcash_manual_ref_check'] ?? false;
+
+            $check = sanitize_text_field( wp_unslash( $_POST['jp_gcash_manual_ref_check'] ?? false ) );
+
             if ( ! $check ) {
+
                 wc_add_notice(__('Please agree to the gcash payment and terms acknowledgement.', 'gcash-payment-gateway-for-woocommerce') , 'error');
             }
         }
@@ -147,9 +155,19 @@ class JP_Manual_Gcash_Ref {
 
     public function save_ref( $order_id )
     {
-        $payment = $_POST['payment_method'] ?? false;
+        $nonce = sanitize_text_field( wp_unslash( $_POST['gcash_ref_nonce'] ?? null ));
+
+        if ( wp_verify_nonce( $nonce, -1 ) ) {
+
+            wc_add_notice(__('Invalid gcash nonce. Please refresh the page and try again.', 'gcash-payment-gateway-for-woocommerce') , 'error');
+        }
+
+        $payment = sanitize_text_field( wp_unslash( $_POST['payment_method'] ?? false ) );
+        
         if ( $payment ) {
-            $ref = $_POST['jp_gcash_manual_ref'] ?? false;   
+        
+            $ref = sanitize_text_field( wp_unslash( $_POST['jp_gcash_manual_ref'] ?? false ) );   
+        
             if ( $ref ) {
                 
                 update_post_meta( $order_id, "jp_gcash_manual_ref", $ref );
