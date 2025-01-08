@@ -52,7 +52,7 @@ class JP_Manual_Gcash_Ref {
             } else if ( current_user_can( 'administrator' ) ) {
                 echo sprintf(
                     '<div style="background: #ddd; padding: 15px; margin: 15px 0;">%s</div>',
-                    __( 'Admin notice: You do not have a qr code setup. Please supply your qr code on the gateway settings to allow users to pay via gcash easily', 'jp_manual_gcash' )
+                    __( 'Admin notice: You do not have a qr code setup. Please supply your qr code on the gateway settings to allow users to pay via gcash easily', 'gcash-payment-gateway-for-woocommerce' )
                 );
             }
         ?>
@@ -79,6 +79,15 @@ class JP_Manual_Gcash_Ref {
         <?php
 
         $fields = ob_get_clean();
+
+        // $fields = wp_kses( $fields, array(
+        //     'div'   => array( 'style', 'class' ),
+        //     'label' => array( 'class' ),
+        //     'input' => array( 'type', 'class', 'placeholder', 'name', 'value' ),
+        //     'img'   => array( 'class' ),
+        //     'p'     => array( 'class' ),
+        // ));
+
         return $description . $fields;
     }
 
@@ -127,11 +136,11 @@ class JP_Manual_Gcash_Ref {
         if ( $payment ) {
             $ref = $_POST['jp_gcash_manual_ref'] ?? false;   
             if ( ! $ref ) {
-                wc_add_notice(__('Please supply your payment reference.') , 'error');
+                wc_add_notice(__('Please supply your payment reference.', 'gcash-payment-gateway-for-woocommerce') , 'error');
             }
             $check = $_POST['jp_gcash_manual_ref_check'] ?? false;
             if ( ! $check ) {
-                wc_add_notice(__('Please agree to the gcash payment and terms acknowledgement.') , 'error');
+                wc_add_notice(__('Please agree to the gcash payment and terms acknowledgement.', 'gcash-payment-gateway-for-woocommerce') , 'error');
             }
         }
     }

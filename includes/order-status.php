@@ -23,7 +23,6 @@ class JP_Manual_Gcash_statuses {
                 'show_in_admin_status_list' => true,
                 'show_in_admin_all_list'    => true,
                 'exclude_from_search'       => false,
-                'label_count'               => _n_noop( 'Pending Gcash Ref validation (%s)', 'Pending Gcash Ref validation (%s)' )
             )
         );
     }

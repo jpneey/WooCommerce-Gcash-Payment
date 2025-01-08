@@ -7,7 +7,7 @@
  * Requires PHP:      7.2
  * Author:            John Paul Burato
  * Author URI:        https://jpburato.vercel.app/
- * Text Domain:       jp_manual_gcash
+ * Text Domain:       gcash-payment-gateway-for-woocommerce
  * License:           GPL v2 or later
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Requires Plugins:  woocommerce
