@@ -71,9 +71,9 @@ add_action( 'plugins_loaded', function(){
                     'desc_tip'    => false,
                 ),
                 'gcash_qr' => array(
-                    'title'       => __( 'Gcash QR code image link', 'gcash-payment-gateway-for-woocommerce' ),
-                    'type'        => 'url',
-                    'description' => __( 'Link to your Gcash QR Code image. <a href="https://help.gcash.com/hc/en-us/articles/15725514628121-Generate-your-Digital-QR-via-GCashPro-Portal" target="_blank">How to get my QR code</a>.', 'gcash-payment-gateway-for-woocommerce' ),
+                    'title'       => __( 'Gcash QR code image', 'gcash-payment-gateway-for-woocommerce' ),
+                    'type'        => 'hidden',
+                    'description' => __( 'Upload your Gcash QR Code image. <a href="https://help.gcash.com/hc/en-us/articles/15725514628121-Generate-your-Digital-QR-via-GCashPro-Portal" target="_blank">How to get my QR code</a>.', 'gcash-payment-gateway-for-woocommerce' ),
                     'default'     => '',
                     'required'    => true
                 ),
@@ -115,6 +115,6 @@ add_action( 'plugins_loaded', function(){
                 'redirect' => $this->get_return_url( $order ),
             );
         }
-    
+
     }
 }, 11 );

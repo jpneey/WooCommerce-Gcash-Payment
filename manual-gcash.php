@@ -14,9 +14,10 @@
  */
 
 define( 'JP_MANUAL_GCASH_VER', '1.0' );
-
 define( 'JP_MANUAL_GCASH_DIR', plugin_dir_path(__FILE__) );
+define( 'JP_MANUAL_GCASH_URL', plugin_dir_url(__FILE__) );
 
 include plugin_dir_path(__FILE__) . '/includes/payment.php';
 include plugin_dir_path(__FILE__) . '/includes/order-status.php';
 include plugin_dir_path(__FILE__) . '/includes/reference.php';
+include plugin_dir_path(__FILE__) . '/includes/upload.php';

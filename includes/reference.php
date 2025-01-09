@@ -46,7 +46,9 @@ class JP_Manual_Gcash_Ref {
         <p class="jp-manual-gcash-checkout-instruction"><?php echo wp_kses_post( $ins ) ?></p>
         <?php if ( $qr ) { ?>
         <div class="jp-manual-gcash-qr-wrapper">
-            <img src="<?php echo esc_url( $qr ) ?>" alt="merchant gcash qr code" class="jp-manual-gcash-qr" />
+            <?php
+                echo wp_get_attachment_image( $qr, 'full' );
+            ?>
         </div>
         <?php
             } else if ( current_user_can( 'administrator' ) ) {
@@ -95,7 +97,7 @@ class JP_Manual_Gcash_Ref {
             .payment_box.payment_method_jp_gcash_manual {
                 padding: 18px !important;
             }
-            .jp-manual-gcash-qr {
+            .jp-manual-gcash-qr-wrapper img {
                 float: none !important;
                 width: 100% !important;
                 padding: 18px !important;
